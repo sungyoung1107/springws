@@ -10,5 +10,8 @@
         <module name="ws0418_XML" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springws" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

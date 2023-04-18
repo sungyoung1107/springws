@@ -27,8 +27,8 @@ public class ProductDAO implements MyDao<Integer, ProductDTO>  {
 
     @Override
     public ProductDTO select(Integer s) {
-        ProductDTO product = new ProductDTO();
-//        product = new ProductDTO(1, "청바지", 39000, 10);
+        ProductDTO product = null;
+        product = new ProductDTO(s, "청바지", 39000, 10);
         return product;
     }
 

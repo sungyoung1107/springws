@@ -20,19 +20,19 @@ public class ProductService implements MyService<Integer, ProductDTO> {
     @Override
     public void register(ProductDTO productDTO) {
         dao.insert(productDTO);
-        System.out.println("product register.");
+        System.out.println("register.");
     }
 
     @Override
     public void remove(Integer s) {
 //        dao.delete(s);
-        System.out.println("product delete.");
+        System.out.println("remove.");
     }
 
     @Override
     public void modify(ProductDTO productDTO) {
         dao.update(productDTO);
-        System.out.println("product modify.");
+        System.out.println("modify.");
     }
 
     @Override
