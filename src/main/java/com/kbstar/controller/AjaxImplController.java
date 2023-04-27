@@ -5,6 +5,7 @@ import com.kbstar.dto.Cust;
 import com.kbstar.dto.Marker;
 import com.kbstar.service.CustService;
 import com.kbstar.service.MarkerService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @RestController
 public class AjaxImplController {
 
@@ -65,14 +67,16 @@ public class AjaxImplController {
     }
 
     @RequestMapping("/markers")
-    public Object markers(String loc){
+    public Object markers(String loc) throws Exception {
 
         List<Marker> list =null ;
         try {
-            list = service.get();
+            list = service.getmarker(loc);
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        log.info(list.toString());
 
         JSONArray ja = new JSONArray();
         for (Marker obj : list){
@@ -83,7 +87,7 @@ public class AjaxImplController {
             jo.put("lat", obj.getLat());
             jo.put("lng", obj.getLng());
             jo.put("img", obj.getImg());
-            jo.put("log", obj.getLoc());
+            jo.put("loc", obj.getLoc());
             ja.add(jo);
         }
         return ja;

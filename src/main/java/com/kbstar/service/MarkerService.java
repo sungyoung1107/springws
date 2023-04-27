@@ -1,6 +1,7 @@
 package com.kbstar.service;
 
 
+import com.kbstar.dto.Cart;
 import com.kbstar.dto.Marker;
 import com.kbstar.frame.KBService;
 import com.kbstar.mapper.MarkerMapper;
@@ -47,5 +48,9 @@ public class MarkerService implements KBService<Integer, Marker> {
     @Override
     public List<Marker> get() throws Exception {
         return mapper.selectall();
+    }
+
+    public List<Marker> getmarker(String loc) throws Exception {
+        return mapper.getmarker(loc);
     }
 }
