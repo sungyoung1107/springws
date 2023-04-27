@@ -13,20 +13,36 @@
 
 <script>
     let map03 = {
-        map:null,
-        init: function(){
+        map           : null,
+        data          : null,
+        init          : async function () {
+
+            await $.ajax({
+                url    : '/markers',
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        // console.log(data[i]["lat"], data[i]["lng"], data[i]["log"]);
+                    }
+                    map03.data = data;
+                }
+            });
+
             this.display();
-            $('#s_btn').click(function(){
-                map03.go(37.5823569, 126.9770582, 's');
+
+            $('#s_btn').click(function (){
+                map03.go(37.640446, 127.014702, 's');//loc 's', 'b', 'j' 추가
             });
-            $('#b_btn').click(function(){
-                map03.go(35.1474458, 129.0656677, 'b');
+            $('#b_btn').click(function (){
+                map03.go(35.1798456, 129.0705432, 'b');
             });
-            $('#j_btn').click(function(){
-                map03.go(35.1548545, 129.0645698, 'j');
+            $('#j_btn').click(function (){
+                map03.go(33.4999002, 126.5341787, 'j');
             });
+
+            this.displaymarkers(map03.data);
+
         },
-        display: function(){
+        display       : function () {
             var mapContainer = document.querySelector('#map03 > #map');
             var mapOption = {
                 center: new kakao.maps.LatLng(37.5553429, 127.042158), // 지도의 중심좌표
@@ -52,7 +68,7 @@
             // 마커가 지도 위에 표시되도록 설정합니다
             marker.setMap(map);
         },
-        go: function(lat, lng, loc){
+        go            : function (lat, lng, loc) {
             // 이동할 위도 경도 위치를 생성합니다
             var moveLatLon = new kakao.maps.LatLng(lat, lng);
             // 지도 중심을 부드럽게 이동시킵니다
@@ -67,39 +83,39 @@
             marker.setup(map);
             map03.makers(loc);
         },
-        makers: function(loc){
+        makers        : function (loc) {
             $.ajax({
-                url: '/markers',
-                data: {
-                    'loc' : loc
+                url    : '/markers',
+                data   : {
+                    'loc': loc
                 },
-                success:function(data){
+                success: function (data) {
                     map03.displaymarkers(data);
                 }
             })
         },
-        displaymarkers : function(positions){
+        displaymarkers: function (positions) {
             // 마커 이미지 모양을 바꿈
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
             // 배열 안에 3개의 마커들이 있음
-            for (var i = 0; i < positions.length; i ++) {
+            for (var i = 0; i < positions.length; i++) {
                 var imageSize = new kakao.maps.Size(20, 30);
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
                 var markerPosition = new kakao.maps.LatLng(positions[i].lat, positions[i].lng);
 
                 var marker = new kakao.maps.Marker({
-                    map: map,
+                    map     : map,
                     position: markerPosition,
-                    title : positions[i].title,
-                    image : markerImage
+                    title   : positions[i].title,
+                    image   : markerImage
                 });
                 // infoWindow
-                var iwContent = '<h2>'+positions[i].title+'</h2>';
-                iwContent += '<img src="/img/'+positions[i].img+'" style="width:50px">';
+                var iwContent = '<h2>' + positions[i].title + '</h2>';
+                iwContent += '<img src="/uimg/' + positions[i].img + '" style="width:50px">';
 
                 var infowindow = new kakao.maps.InfoWindow({
-                    position : markerPosition,
+                    position: markerPosition,
                     content : iwContent
                 });
 
@@ -109,17 +125,19 @@
 
 
                 function mouseoverListener(marker, infowindow) {
-                    return function(){
+                    return function () {
                         infowindow.open(map, marker);
                     };
                 }
+
                 function mouseoutListener(marker, infowindow) {
-                    return function(){
+                    return function () {
                         infowindow.close();
                     };
                 }
+
                 function mouseclickListener(target) {
-                    return function(){
+                    return function () {
                         location.href = target;
                     };
                 }
@@ -128,17 +146,17 @@
 
     }
     // 문서가 준비
-    $(function(){
+    $(function () {
         map03.init();
     })
 </script>
 <div class="col-sm-8 text-left">
     <div class="container" id="map03">
         <h2>map03</h2>
-        <button type="button" id = "s_btn" class="btn btn-primary">Seoul</button>
-        <button type="button" id = "b_btn" class="btn btn-primary">Busan</button>
-        <button type="button" id = "j_btn" class="btn btn-primary">Jeju</button>
-        <div id = "map"></div>
+        <button type="button" id="s_btn" class="btn btn-primary">Seoul</button>
+        <button type="button" id="b_btn" class="btn btn-primary">Busan</button>
+        <button type="button" id="j_btn" class="btn btn-primary">Jeju</button>
+        <div id="map"></div>
     </div>
 </div>
 <%--</html>--%>
